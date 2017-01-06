@@ -21,11 +21,13 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	float x, y, xv, yv;
 
-	static final float MAX_VELOCITY = 500;
+	static final float MAX_VELOCITY = 100;
+	static final float SPEED_VELOCITY = MAX_VELOCITY * 2 ;
 
-	boolean canJump;
 
-	static final float MAX_JUMP_VELOCITY = 2000;
+	//boolean canJump = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+	boolean fast;
+
 	static final int GRAVITY = -50;
 	boolean goUp,goDown,goLeft,goRight = true;
 
@@ -40,10 +42,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		 up = grid[6][1];
 		 right = grid[6][3];
 		 stand = grid [6][2];
-		 left = new TextureRegion(right);
-		 left.flip(true, false);
-
-
+		 //left = new TextureRegion(right);
+		 //left.flip(true, false);
 
 	}
 
@@ -72,6 +72,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(img, x, y, DRAW_WIDTH,DRAW_HEIGHT);
 		batch.end();
+
 	}
 
 	float decelerate(float velocity) {
@@ -84,29 +85,37 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 
 
-
-
-
 	void move() {
 
-		if (Gdx.input.isKeyPressed(Input.Keys.UP) ) {
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)  ) {
 			yv = MAX_VELOCITY;
-
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+			yv=SPEED_VELOCITY;
+		}
 
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			yv = MAX_VELOCITY * -1;
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+			yv = SPEED_VELOCITY *-1;
+		}
+
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) ) {
 			xv = MAX_VELOCITY;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			xv = SPEED_VELOCITY;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			xv = MAX_VELOCITY * -1;
 		}
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			xv = SPEED_VELOCITY * -1;
+		}
 
 		y += yv * Gdx.graphics.getDeltaTime();
 		x += xv * Gdx.graphics.getDeltaTime();
-
 
 		yv = decelerate(yv);
 		xv = decelerate(xv);
