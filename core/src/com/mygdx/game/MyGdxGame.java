@@ -96,36 +96,17 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.end();
 
         zombie();
-
-
-
-
-
     }
 
-
-
-        /*if (goRight){
-            batch.draw(img, x, y, DRAW_WIDTH,DRAW_HEIGHT);
-        }else if (goLeft){
-            batch.draw(img, x, y, DRAW_WIDTH*-1,DRAW_HEIGHT);
-        }else if(goUp){
-            batch.draw(img, x, y, DRAW_WIDTH,DRAW_HEIGHT);
-        }else if (goDown){
-            batch.draw(img, x, y, DRAW_WIDTH,DRAW_HEIGHT*-1);
-        }else {
-            batch.draw(img, x, y, DRAW_WIDTH,DRAW_HEIGHT);
-        }*/
-
-
-   // }
 
     public void zombie(){
         TextureRegion img;
         time += Gdx.graphics.getDeltaTime();
         img = zombie.getKeyFrame(time,true);
         batch.begin();
-        batch.draw(img, 20, 20, DRAW_WIDTH, DRAW_HEIGHT);
+        batch.draw(zoombieStand, 20, 20, DRAW_WIDTH, DRAW_HEIGHT);
+
+        //batch.draw(img, 20, 20, DRAW_WIDTH, DRAW_HEIGHT);
         batch.end();
     }
 
