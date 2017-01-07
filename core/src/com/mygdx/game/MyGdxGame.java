@@ -47,7 +47,7 @@ public class MyGdxGame extends ApplicationAdapter {
         up = grid[6][1];
         right = grid[6][3];
         stand = grid[6][2];
-        run = grid[6][3];
+        //run = grid[6][3];
         zoombiewalk = grid[6][7];
         zoombieStand = grid[6][6];
 
@@ -94,15 +94,14 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         batch.draw(img, x, y, DRAW_WIDTH, DRAW_HEIGHT);
         batch.end();
-
         zombie();
     }
 
 
     public void zombie(){
         TextureRegion img;
-        time += Gdx.graphics.getDeltaTime();
-        img = zombie.getKeyFrame(time,true);
+        //time += Gdx.graphics.getDeltaTime();
+        //img = zombie.getKeyFrame(time,true);
         batch.begin();
         batch.draw(zoombieStand, 20, 20, DRAW_WIDTH, DRAW_HEIGHT);
 
