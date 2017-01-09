@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import java.util.Random;
@@ -20,7 +21,7 @@ import java.util.zip.ZipEntry;
 public class MyGdxGame extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
-    TextureRegion down, up, right, left, stand, walkOpo, runLeft, zoombiewalk, zoombieStand;
+    TextureRegion down, up, right, left, stand, walkOpo, runLeft, zoombiewalk, zoombieStand, tree;
 
     static final int WIDTH = 16;
     static final int HEIGHT = 16;
@@ -28,7 +29,7 @@ public class MyGdxGame extends ApplicationAdapter {
     static final int DRAW_WIDTH = WIDTH * 3;
     static final int DRAW_HEIGHT = HEIGHT * 3;
 
-    float x, y, xv, yv, zombieX,zombieY;
+    float x, y, xv, yv, zombieX, zombieY;
 
 
     static final float MAX_VELOCITY = 100;
@@ -70,9 +71,9 @@ public class MyGdxGame extends ApplicationAdapter {
         up = grid[6][1];
         right = grid[6][3];
         stand = grid[6][2];
-        //run = grid[6][3];
         zoombiewalk = grid[6][7];
         zoombieStand = grid[6][6];
+        //tree = TextureRegion.split([]);
 
 
         walkOpo = new TextureRegion(stand);
@@ -90,11 +91,18 @@ public class MyGdxGame extends ApplicationAdapter {
 
         maploader = new TmxMapLoader();
         map = maploader.load("level1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map, 2f);
         camera = new OrthographicCamera();
 
+       /* TiledMap map = new TmxMapLoader().load("level1.tmx");
+        float uniScale =1/8f;
+        renderer = new OrthogonalTiledMapRenderer(map,uniScale);
+        OrthographicCamera camera = new OrthographicCamera(800,600);
+        camera.setToOrtho(true,50f,50f);
+        renderer.setView(camera);*/
 
-        }
+
+    }
 
     @Override
     public void render() {
@@ -121,29 +129,29 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
+        camera.update();
         renderer.setView(camera);
-        camera.setToOrtho(false,Gdx.graphics.getWidth() ,Gdx.graphics.getHeight());
+
+        camera.setToOrtho(false);
         renderer.render();
 
         batch.begin();
         batch.draw(img, x, y, DRAW_WIDTH, DRAW_HEIGHT);
+        //batch.draw(tree,300,10,DRAW_WIDTH,DRAW_HEIGHT);
         batch.end();
         zombie();
     }
 
 
-    public void zombie(){
+    public void zombie() {
+        zombieMove();
         zombieX++;
         zombieY++;
 
-        zombieX = random.nextInt(Gdx.graphics.getWidth());
-        zombieY = random.nextInt(Gdx.graphics.getHeight());
-
-
         TextureRegion img;
-        img = zombie.getKeyFrame(time,true);
+        img = zombie.getKeyFrame(time, true);
         batch.begin();
-        batch.draw(img, zombieX,zombieY, DRAW_WIDTH, DRAW_HEIGHT);
+        batch.draw(img, zombieX, zombieY, DRAW_WIDTH, DRAW_HEIGHT);
         batch.end();
     }
 
@@ -190,6 +198,7 @@ public class MyGdxGame extends ApplicationAdapter {
         y += yv * Gdx.graphics.getDeltaTime();
         x += xv * Gdx.graphics.getDeltaTime();
 
+
         yv = decelerate(yv);
         xv = decelerate(xv);
 
@@ -212,6 +221,24 @@ public class MyGdxGame extends ApplicationAdapter {
             y = 0;
         }
     }
+
+    public void zombieMove() {
+        if (zombieX < 0) {
+            zombieX = Gdx.graphics.getHeight();
+        }
+        if (zombieX > Gdx.graphics.getHeight()) {
+            zombieX = 0;
+        }
+
+        if (zombieY < 0) {
+            zombieY = Gdx.graphics.getWidth();
+
+        }
+        if (zombieY > Gdx.graphics.getWidth()) {
+            zombieY = 0;
+        }
+    }
+
 
     @Override
     public void dispose() {
