@@ -22,7 +22,7 @@ public class MyGdxGame extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
     TextureRegion down, up, right, left, stand, walkOpo, runLeft, zoombiewalk,
-            zoombieStand, tree,rock, apple;
+            zoombieStand, tree,rock;
 
     static final int WIDTH = 16;
     static final int HEIGHT = 16;
@@ -30,7 +30,7 @@ public class MyGdxGame extends ApplicationAdapter {
     static final int DRAW_WIDTH = WIDTH * 3;
     static final int DRAW_HEIGHT = HEIGHT * 3;
 
-    float x, y, xv, yv, zombieX, zombieY, zombieXV,zombieYV;
+    float x, y, xv, yv, zombieX, zombieY;
 
 
     static final float MAX_VELOCITY = 100;
