@@ -21,7 +21,8 @@ import java.util.zip.ZipEntry;
 public class MyGdxGame extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
-    TextureRegion down, up, right, left, stand, walkOpo, runLeft, zoombiewalk, zoombieStand, tree;
+    TextureRegion down, up, right, left, stand, walkOpo, runLeft, zoombiewalk,
+            zoombieStand, tree,rock, apple;
 
     static final int WIDTH = 16;
     static final int HEIGHT = 16;
@@ -29,7 +30,7 @@ public class MyGdxGame extends ApplicationAdapter {
     static final int DRAW_WIDTH = WIDTH * 3;
     static final int DRAW_HEIGHT = HEIGHT * 3;
 
-    float x, y, xv, yv, zombieX, zombieY;
+    float x, y, xv, yv, zombieX, zombieY, zombieXV,zombieYV;
 
 
     static final float MAX_VELOCITY = 100;
@@ -48,14 +49,7 @@ public class MyGdxGame extends ApplicationAdapter {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    Random random = new Random();
 
-
-    public MyGdxGame(float zombieX, float zombieY) {
-        this.zombieX = random.nextInt(Gdx.graphics.getWidth());
-        this.zombieY = random.nextInt(Gdx.graphics.getHeight());
-
-    }
 
     public MyGdxGame() {
     }
@@ -65,7 +59,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch = new SpriteBatch();
         Texture tiles = new Texture("tiles.png");
 
-
+        //creates the figure
         TextureRegion[][] grid = TextureRegion.split(tiles, WIDTH, HEIGHT);
         down = grid[6][0];
         up = grid[6][1];
@@ -73,7 +67,7 @@ public class MyGdxGame extends ApplicationAdapter {
         stand = grid[6][2];
         zoombiewalk = grid[6][7];
         zoombieStand = grid[6][6];
-        //tree = TextureRegion.split([]);
+        rock = grid [7][5];
 
 
         walkOpo = new TextureRegion(stand);
@@ -91,15 +85,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
         maploader = new TmxMapLoader();
         map = maploader.load("level1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 2f);
+        renderer = new OrthogonalTiledMapRenderer(map,.2f);
         camera = new OrthographicCamera();
-
-       /* TiledMap map = new TmxMapLoader().load("level1.tmx");
-        float uniScale =1/8f;
-        renderer = new OrthogonalTiledMapRenderer(map,uniScale);
-        OrthographicCamera camera = new OrthographicCamera(800,600);
-        camera.setToOrtho(true,50f,50f);
-        renderer.setView(camera);*/
 
 
     }
@@ -129,15 +116,16 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-        camera.update();
         renderer.setView(camera);
-
-        camera.setToOrtho(false);
+        camera.setToOrtho(true,50,50);
         renderer.render();
 
         batch.begin();
         batch.draw(img, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-        //batch.draw(tree,300,10,DRAW_WIDTH,DRAW_HEIGHT);
+        batch.draw(rock,300,400,DRAW_WIDTH,DRAW_HEIGHT);
+        batch.draw(rock,500,200,DRAW_WIDTH,DRAW_HEIGHT);
+        batch.draw(rock,25,300,DRAW_WIDTH,DRAW_HEIGHT);
+        batch.draw(rock,30,100,DRAW_WIDTH,DRAW_HEIGHT);
         batch.end();
         zombie();
     }
@@ -145,13 +133,16 @@ public class MyGdxGame extends ApplicationAdapter {
 
     public void zombie() {
         zombieMove();
-        zombieX++;
-        zombieY++;
+        Random random = new Random();
+        //random.nextFloat(zombieX);
+        zombieX ++;
+        zombieY ++;
 
         TextureRegion img;
         img = zombie.getKeyFrame(time, true);
         batch.begin();
         batch.draw(img, zombieX, zombieY, DRAW_WIDTH, DRAW_HEIGHT);
+
         batch.end();
     }
 
@@ -237,6 +228,7 @@ public class MyGdxGame extends ApplicationAdapter {
         if (zombieY > Gdx.graphics.getWidth()) {
             zombieY = 0;
         }
+
     }
 
 
