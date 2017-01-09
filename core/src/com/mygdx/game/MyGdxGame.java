@@ -68,6 +68,7 @@ public class MyGdxGame extends ApplicationAdapter {
         zoombiewalk = grid[6][7];
         zoombieStand = grid[6][6];
         rock = grid [7][5];
+        tree = new TextureRegion(tiles,0,8,WIDTH,HEIGHT);
 
 
         walkOpo = new TextureRegion(stand);
@@ -122,10 +123,11 @@ public class MyGdxGame extends ApplicationAdapter {
 
         batch.begin();
         batch.draw(img, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-        batch.draw(rock,300,400,DRAW_WIDTH,DRAW_HEIGHT);
-        batch.draw(rock,500,200,DRAW_WIDTH,DRAW_HEIGHT);
-        batch.draw(rock,25,300,DRAW_WIDTH,DRAW_HEIGHT);
-        batch.draw(rock,30,100,DRAW_WIDTH,DRAW_HEIGHT);
+
+        batch.draw(tree,300,400,DRAW_WIDTH,DRAW_HEIGHT);
+        batch.draw(tree,500,200,DRAW_WIDTH,DRAW_HEIGHT);
+        batch.draw(tree,25,300,DRAW_WIDTH,DRAW_HEIGHT);
+        batch.draw(tree,30,100,DRAW_WIDTH,DRAW_HEIGHT);
         batch.end();
         zombie();
     }
