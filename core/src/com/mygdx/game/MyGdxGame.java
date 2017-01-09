@@ -4,16 +4,23 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+
+import java.util.Random;
+import java.util.zip.ZipEntry;
 
 public class MyGdxGame extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
-    TextureRegion down, up, right, left, stand, run, walkOpo, runLeft, zoombiewalk, zoombieStand;
+    TextureRegion down, up, right, left, stand, walkOpo, runLeft, zoombiewalk, zoombieStand;
 
     static final int WIDTH = 16;
     static final int HEIGHT = 16;
@@ -21,7 +28,8 @@ public class MyGdxGame extends ApplicationAdapter {
     static final int DRAW_WIDTH = WIDTH * 3;
     static final int DRAW_HEIGHT = HEIGHT * 3;
 
-    float x, y, xv, yv;
+    float x, y, xv, yv, zombieX,zombieY;
+
 
     static final float MAX_VELOCITY = 100;
     static final float SPEED_VELOCITY = MAX_VELOCITY * 2;
@@ -35,6 +43,21 @@ public class MyGdxGame extends ApplicationAdapter {
     Animation walk, walkLeft, zombie;
     float time;
 
+    private TmxMapLoader maploader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
+    private OrthographicCamera camera;
+    Random random = new Random();
+
+
+    public MyGdxGame(float zombieX, float zombieY) {
+        this.zombieX = random.nextInt(Gdx.graphics.getWidth());
+        this.zombieY = random.nextInt(Gdx.graphics.getHeight());
+
+    }
+
+    public MyGdxGame() {
+    }
 
     @Override
     public void create() {
@@ -65,8 +88,13 @@ public class MyGdxGame extends ApplicationAdapter {
 
         zombie = new Animation(0.2f, zoombieStand, zoombiewalk);
 
+        maploader = new TmxMapLoader();
+        map = maploader.load("level1.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map);
+        camera = new OrthographicCamera();
 
-    }
+
+        }
 
     @Override
     public void render() {
@@ -91,6 +119,12 @@ public class MyGdxGame extends ApplicationAdapter {
 
         Gdx.gl.glClearColor(0, 1, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+        renderer.setView(camera);
+        camera.setToOrtho(false,Gdx.graphics.getWidth() ,Gdx.graphics.getHeight());
+        renderer.render();
+
         batch.begin();
         batch.draw(img, x, y, DRAW_WIDTH, DRAW_HEIGHT);
         batch.end();
@@ -99,13 +133,17 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
     public void zombie(){
-        TextureRegion img;
-        //time += Gdx.graphics.getDeltaTime();
-        //img = zombie.getKeyFrame(time,true);
-        batch.begin();
-        batch.draw(zoombieStand, 20, 20, DRAW_WIDTH, DRAW_HEIGHT);
+        zombieX++;
+        zombieY++;
 
-        //batch.draw(img, 20, 20, DRAW_WIDTH, DRAW_HEIGHT);
+        zombieX = random.nextInt(Gdx.graphics.getWidth());
+        zombieY = random.nextInt(Gdx.graphics.getHeight());
+
+
+        TextureRegion img;
+        img = zombie.getKeyFrame(time,true);
+        batch.begin();
+        batch.draw(img, zombieX,zombieY, DRAW_WIDTH, DRAW_HEIGHT);
         batch.end();
     }
 
@@ -117,8 +155,6 @@ public class MyGdxGame extends ApplicationAdapter {
         }
         return velocity;
     }
-
-
 
 
     void move() {
@@ -158,8 +194,6 @@ public class MyGdxGame extends ApplicationAdapter {
         xv = decelerate(xv);
 
         outOfBound();
-
-
     }
 
     public void outOfBound() {
@@ -183,5 +217,7 @@ public class MyGdxGame extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         img.dispose();
+        map.dispose();
+        renderer.dispose();
     }
 }
