@@ -86,7 +86,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
         maploader = new TmxMapLoader();
         map = maploader.load("level1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map,.2f);
+        renderer = new OrthogonalTiledMapRenderer(map,1/8f);
         camera = new OrthographicCamera();
 
 
