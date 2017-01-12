@@ -200,34 +200,34 @@ public class MyGdxGame extends ApplicationAdapter {
 
     public void outOfBound() {
         if (x < 0) {
-            x = Gdx.graphics.getHeight();
+            x = Gdx.graphics.getWidth();
         }
-        if (x > Gdx.graphics.getHeight()) {
+        if (x > Gdx.graphics.getWidth()) {
             x = 0;
         }
 
         if (y < 0) {
-            y = Gdx.graphics.getWidth();
+            y = Gdx.graphics.getHeight();
 
         }
-        if (y > Gdx.graphics.getWidth()) {
+        if (y > Gdx.graphics.getHeight()) {
             y = 0;
         }
     }
 
     public void zombieMove() {
         if (zombieX < 0) {
-            zombieX = Gdx.graphics.getHeight();
+            zombieX = Gdx.graphics.getWidth();
         }
-        if (zombieX > Gdx.graphics.getHeight()) {
+        if (zombieX > Gdx.graphics.getWidth()) {
             zombieX = 0;
         }
 
         if (zombieY < 0) {
-            zombieY = Gdx.graphics.getWidth();
+            zombieY = Gdx.graphics.getHeight();
 
         }
-        if (zombieY > Gdx.graphics.getWidth()) {
+        if (zombieY > Gdx.graphics.getHeight()) {
             zombieY = 0;
         }
 
